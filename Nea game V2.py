@@ -35,7 +35,7 @@ class Player():
     def update(self):
         dx,dy = 0,0
         
-        ########### -Controls- ###########
+        ########### -Controls- ###########test
         key = pygame.key.get_pressed()
         
         if key[pygame.K_LEFT]:
