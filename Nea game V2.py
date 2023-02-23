@@ -31,28 +31,56 @@ class Player():
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
+        self.vel_y = 0
+        self.jumped = False
+
         
     def update(self):
         dx,dy = 0,0
         
         ########### -Controls- ###########
         key = pygame.key.get_pressed()
-        
-        if key[pygame.K_LEFT]:
-            dx -= 5
-            print("Left Key Pressed")
-            print("x position " + str(self.rect.x))
-            print("y position " + str(self.rect.y))
             
+        ###### -Forward- ######
         if key[pygame.K_RIGHT]:
             dx += 5
-            print("Right Key Pressed")
-            print("x position " + str(self.rect.x))
-            print("y position " + str(self.rect.y))
+        #######################
             
+        ###### -Backward- ######
+        if key[pygame.K_LEFT]:
+            dx -= 5
+        ########################
+        
+        #################### -Jump- ####################
+        if key[pygame.K_SPACE] and self.jumped == False:
+            self.jumped = True
+            self.vel_y = -15
+            print("Space button pressed")
+            print('x postion ' + str(self.rect.x))
+            print('y postion ' + str(self.rect.y))
+
+        if key[pygame.K_SPACE] == False:
+            self.jumped = False
+
+        ######### -Temp collision- #########
+        if self.rect.bottom > screen_height:
+            self.rect.bottom = screen_height
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+          
+        #### -Gravity- ####
+        self.vel_y += 1
+        if self.vel_y > 10:
+            self.vel_y = 10
+        #~~~~~~~~~~~~~~~~~#    
+        
+        
+        dy += self.vel_y
+        
         
         self.rect.x += dx
         self.rect.y += dy
+        
+
         
         screen.blit(self.image, self.rect) 
         
