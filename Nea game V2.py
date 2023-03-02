@@ -4,6 +4,9 @@ from pygame.locals import *
 
 pygame.init()
 
+clock = pygame.time.Clock()
+fps = 60
+
 screen_width = 800
 screen_height = 800
 screen = pygame.display.set_mode((screen_width, screen_height))
@@ -42,24 +45,23 @@ class Player():
         key = pygame.key.get_pressed()
             
         ###### -Forward- ######
-        if key[pygame.K_RIGHT]:
+        if key[pygame.K_RIGHT] or [pygame.K_d]:
             dx += 5
-        #######################
-            
+        
         ###### -Backward- ######
-        if key[pygame.K_LEFT]:
+        if key[pygame.K_LEFT] or [[pygame.K_a]]:
             dx -= 5
-        ########################
+
         
         #################### -Jump- ####################
-        if key[pygame.K_SPACE] and self.jumped == False:
+        if key[pygame.K_SPACE] or [pygame.K_UP] or [pygame.K_w] and self.jumped == False:
             self.jumped = True
             self.vel_y = -15
             print("Space button pressed")
-            print('x postion ' + str(self.rect.x))
-            print('y postion ' + str(self.rect.y))
+            print('x position ' + str(self.rect.x))
+            print('y position ' + str(self.rect.y))
 
-        if key[pygame.K_SPACE] == False:
+        if key[pygame.K_SPACE] or [pygame.K_UP] or [pygame.K_w] == False:
             self.jumped = False
 
         ######### -Temp collision- #########
@@ -150,6 +152,8 @@ player = Player(40, screen_height - 120)
 run = True
 while run:
 
+    clock.tick(fps)
+    
     screen.blit(bg_img, (0,0))
     # screen.blit(grnd_img, (100,100))
 
