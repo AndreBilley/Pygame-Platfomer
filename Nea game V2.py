@@ -45,23 +45,23 @@ class Player():
         key = pygame.key.get_pressed()
             
         ###### -Forward- ######
-        if key[pygame.K_RIGHT] or [pygame.K_d]:
+        if key[pygame.K_RIGHT] or key[pygame.K_d]:
             dx += 5
         
         ###### -Backward- ######
-        if key[pygame.K_LEFT] or [[pygame.K_a]]:
+        if key[pygame.K_LEFT] or key[pygame.K_a]:
             dx -= 5
 
         
         #################### -Jump- ####################
-        if key[pygame.K_SPACE] or [pygame.K_UP] or [pygame.K_w] and self.jumped == False:
+        if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) and self.jumped == False:
             self.jumped = True
             self.vel_y = -15
             print("Space button pressed")
             print('x position ' + str(self.rect.x))
             print('y position ' + str(self.rect.y))
 
-        if key[pygame.K_SPACE] or [pygame.K_UP] or [pygame.K_w] == False:
+        if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False:
             self.jumped = False
 
         ######### -Temp collision- #########
