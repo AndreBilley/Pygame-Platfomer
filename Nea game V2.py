@@ -29,8 +29,14 @@ def draw_grid():
 
 class Player():
     def __init__(self, x, y):
-        char = pygame.image.load('Nea_game_files/adventurer.png')
-        self.image = pygame.transform.scale(char, (100,80))
+        self.images_right = []
+        self.index = 0
+        self.counter = 0
+        for num in range (0, 2):
+            char_right = pygame.image.load(f'Nea_game_files/Sprites/adventurer-idle-{num}.png')
+            char_right = self.image = pygame.transform.scale(char_right, (100,80))
+            self.images_right.append(char_right)
+        self.image = self.images_right[self.index] 
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.y = y
