@@ -43,7 +43,22 @@ class Player():
         
         ########### -Controls- ###########
         key = pygame.key.get_pressed()
-            
+        
+        if key[pygame.K_LEFT]:
+            print('Left Arrow Pressed')
+        if key[pygame.K_RIGHT]:
+            print('Right Arrow Pressed')
+        if key[pygame.K_UP]:
+            print('Up Arrow Pressed')
+        if key[pygame.K_w]:
+            print('W Pressed')
+        if key[pygame.K_a]:
+            print('A Pressed')
+        if key[pygame.K_d]:
+            print('D Pressed')
+        if key[pygame.K_SPACE]:
+            print('Spacebar Pressed')
+        
         ###### -Forward- ######
         if key[pygame.K_RIGHT] or key[pygame.K_d]:
             dx += 5
@@ -57,9 +72,6 @@ class Player():
         if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) and self.jumped == False:
             self.jumped = True
             self.vel_y = -15
-            print("Space button pressed")
-            print('x position ' + str(self.rect.x))
-            print('y position ' + str(self.rect.y))
 
         if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False:
             self.jumped = False
