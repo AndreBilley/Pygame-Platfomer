@@ -49,23 +49,9 @@ class Player():
         dx,dy = 0,0
         walk_cooldown = 4
         
-        ########### -Controls- ###########
+################## -Controls- ##################
         key = pygame.key.get_pressed()
         
-        if key[pygame.K_LEFT]:
-            print('Left Arrow Pressed')
-        if key[pygame.K_RIGHT]:
-            print('Right Arrow Pressed')
-        if key[pygame.K_UP]:
-            print('Up Arrow Pressed')
-        if key[pygame.K_w]:
-            print('W Pressed')
-        if key[pygame.K_a]:
-            print('A Pressed')
-        if key[pygame.K_d]:
-            print('D Pressed')
-        if key[pygame.K_SPACE]:
-            print('Spacebar Pressed')
         
         ###### -Forward- ######
         if key[pygame.K_RIGHT] or key[pygame.K_d]:
@@ -78,7 +64,7 @@ class Player():
             dx -= 5
 
         
-        #################### -Jump- ####################
+        ###### -Jump- ######
         if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) and self.jumped == False:
             self.jumped = True
             self.vel_y = -15
@@ -86,18 +72,10 @@ class Player():
         if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False:
             self.jumped = False
 
-        ######### -Temp collision- #########
+        ###### -Temp collision- ######
         if self.rect.bottom > screen_height:
             self.rect.bottom = screen_height
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
-        
-        ####### -Animations- #######
-        if self.counter > walk_cooldown:
-            self.counter = 0
-            self.index += 1
-            if self.index >= len(self.images_right):
-                self.index = 0
-            self.image = self.images_right[self.index]     
           
         #### -Gravity- ####
         self.vel_y += 1
@@ -105,7 +83,16 @@ class Player():
             self.vel_y = 10
         #~~~~~~~~~~~~~~~~~#    
         
-        
+        ###### -Animations- ######
+        # if self.counter > walk_cooldown:
+        #     self.counter = 0
+        self.index += 1
+        if self.index >= len(self.images_right):
+            self.index = 0
+        self.image = self.images_right[self.index]  
+           
+           
+           
         dy += self.vel_y
         
         
