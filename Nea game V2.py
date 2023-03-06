@@ -32,8 +32,9 @@ class Player():
         self.images_right = []
         self.index = 0
         self.counter = 0
-        for num in range (0, 2):
-            char_right = pygame.image.load(f'Nea_game_files/Sprites/adventurer-idle-{num}.png')
+        # char = pygame.image.load('Nea_game_files/Sprites/adventurer-idle-0.png')
+        for num in range (0, 5):
+            char_right = pygame.image.load(f'Nea_game_files/Sprites/adventurer-run-{num}.png')
             char_right = self.image = pygame.transform.scale(char_right, (100,80))
             self.images_right.append(char_right)
         self.image = self.images_right[self.index] 
@@ -46,6 +47,7 @@ class Player():
         
     def update(self):
         dx,dy = 0,0
+        walk_cooldown = 4
         
         ########### -Controls- ###########
         key = pygame.key.get_pressed()
@@ -67,10 +69,12 @@ class Player():
         
         ###### -Forward- ######
         if key[pygame.K_RIGHT] or key[pygame.K_d]:
+            self.counter +=1
             dx += 5
         
         ###### -Backward- ######
         if key[pygame.K_LEFT] or key[pygame.K_a]:
+            self.counter +=1
             dx -= 5
 
         
@@ -86,6 +90,14 @@ class Player():
         if self.rect.bottom > screen_height:
             self.rect.bottom = screen_height
         #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+        
+        ####### -Animations- #######
+        if self.counter > walk_cooldown:
+            self.counter = 0
+            self.index += 1
+            if self.index >= len(self.images_right):
+                self.index = 0
+            self.image = self.images_right[self.index]     
           
         #### -Gravity- ####
         self.vel_y += 1
