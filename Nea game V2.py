@@ -62,7 +62,7 @@ class Player():
             self.direction = 1
             dx += 5
             
-        if key[pygame.K_RIGHT] == False and key[pygame.K_LEFT] == False:
+        if (key[pygame.K_RIGHT] or key[pygame.K_d]) == False and (key[pygame.K_LEFT] or key[pygame.K_a]) == False:
             self.counter = 0
             self.index = 0
             if self.direction == 1:
