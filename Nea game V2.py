@@ -20,11 +20,6 @@ bg_img = pygame.image.load('Nea_game_files/glacial_mountains.png')
 grnd_img = pygame.image.load('Nea_game_files/ground.png')
 bg_img = pygame.transform.scale(bg_img, (800,800))
 
-############-Draw Grid-###############
-def draw_grid():
-    for line in range(0, 20):
-        pygame.draw.line(screen, (255, 255, 255), (0, line * tile_size), (screen_width, line * tile_size)) # Horziontal lines
-        pygame.draw.line(screen, (255, 255, 255), (line * tile_size, 0), (line * tile_size, screen_height)) # Vertical lines
 
 class Player():
     def __init__(self, x, y):
@@ -32,10 +27,9 @@ class Player():
         self.images_left = []
         self.index = 0
         self.counter = 0
-        # char = pygame.image.load('Nea_game_files/Sprites/adventurer-idle-0.png')
         for num in range (0, 5):
             char_right = pygame.image.load(f'Nea_game_files/Sprites/adventurer-run-{num}.png')
-            char_right = self.image = pygame.transform.scale(char_right, (40,50))
+            char_right = self.image = pygame.transform.scale(char_right, (40,56))
             char_left = pygame.transform.flip(char_right, True, False)
             self.images_right.append(char_right)
             self.images_left.append(char_left)
@@ -84,22 +78,17 @@ class Player():
             self.jumped = True
             self.vel_y = -15
 
+
         if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False:
             self.jumped = False
 
-        ###### -Collisions- ######
-        for tile in world.tile_list:
-            if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
-                if self.vel_y < 0:
-                    dy = tile[1].bottom - self.rect.top
-                elif self.vel_y >= 0:
-                    dy = tile[1].top - self.rect.bottom
-        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
           
         #### -Gravity- ####
         self.vel_y += 1
         if self.vel_y > 10:
             self.vel_y = 10
+        dy += self.vel_y
         #~~~~~~~~~~~~~~~~~#    
         
         ###### -Animations- ######
@@ -113,9 +102,21 @@ class Player():
             if self.direction == -1:
                 self.image = self.images_left[self.index]
            
-           
-        dy += self.vel_y
-        
+        ###### -Collisions- ######
+        # x collisions
+        for tile in world.tile_list:
+            if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                dx = 0
+        # y collisions
+        for tile in world.tile_list:
+            if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                if self.vel_y < 0:
+                    dy = tile[1].bottom - self.rect.top
+                    self.vel_y = 0
+                elif self.vel_y >= 0:
+                    dy = tile[1].top - self.rect.bottom
+                    self.vel_y = 0
+        #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
         
         self.rect.x += dx
         self.rect.y += dy
@@ -200,7 +201,6 @@ while run:
     world.draw()
     player.update()
 
-    draw_grid()
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
