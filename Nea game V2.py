@@ -68,7 +68,7 @@ class Player():
         
         ###### -Backward- ######
         if key[pygame.K_LEFT] or key[pygame.K_a]:
-            self.counter +=1
+            self.counter += 1
             self.direction = -1
             dx -= 5
 
@@ -103,16 +103,22 @@ class Player():
                 self.image = self.images_left[self.index]
            
         ###### -Collisions- ######
-        # x collisions
+        # Check for collisions in the x-direction
         for tile in world.tile_list:
+            # Check if the character's rectangle collides with the current tile
             if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                # If there is a collision, set dx to zero to stop the character from moving in the x-direction
                 dx = 0
-        # y collisions
+
+        # Check for collisions in the y-direction
         for tile in world.tile_list:
+            # Check if the character's rectangle collides with the current tile
             if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                # If there is a collision and the character is moving upwards (vel_y is negative), adjust dy and stop the upward movement
                 if self.vel_y < 0:
                     dy = tile[1].bottom - self.rect.top
                     self.vel_y = 0
+                # If there is a collision and the character is moving downwards or is stationary (vel_y is non-negative), adjust dy and stop the downward movement
                 elif self.vel_y >= 0:
                     dy = tile[1].top - self.rect.bottom
                     self.vel_y = 0
@@ -124,7 +130,7 @@ class Player():
 
         
         screen.blit(self.image, self.rect) 
-        pygame.draw.rect(screen, (255,255,255), self.rect, 2)
+        pygame.draw.rect(screen, (255,255,255), self.rect, 2,)
         
                
 class World():

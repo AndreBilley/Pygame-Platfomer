@@ -20,8 +20,8 @@ pygame.display.set_caption('Level Editor')
 
 
 #load images
-sun_img = pygame.image.load('img/sun.png')
-sun_img = pygame.transform.scale(sun_img, (tile_size, tile_size))
+# sun_img = pygame.image.load('img/sun.png')
+# sun_img = pygame.transform.scale(sun_img, (tile_size, tile_size))
 bg_img = pygame.image.load('Nea_game_files/glacial_mountains.png')
 bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height - margin))
 gravel_img = pygame.image.load('Nea_game_files/gravel.png')
@@ -151,7 +151,7 @@ while run:
 	#draw background
 	screen.fill(green)
 	screen.blit(bg_img, (0, 0))
-	screen.blit(sun_img, (tile_size * 2, tile_size * 2))
+	# screen.blit(sun_img, (tile_size * 2, tile_size * 2))
 
 	#load and save level
 	if save_button.draw():
