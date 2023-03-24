@@ -1,28 +1,9 @@
 from logging import getLoggerClass
 import pygame
-from pygame.locals import *
-
-pygame.init()
-
-clock = pygame.time.Clock()
-fps = 60
-
-screen_width = 800
-screen_height = 800
-screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('Platformer')
-
-# Define game variables
-tile_size = 40
-
-# Load images
-bg_img = pygame.image.load('Nea_game_files/glacial_mountains.png')
-grnd_img = pygame.image.load('Nea_game_files/ground.png')
-bg_img = pygame.transform.scale(bg_img, (800,800))
-
+from Globals import *
 
 class Player():
-    def __init__(self, x, y):
+    def __init__(self, x, y, world):
         self.images_right = []
         self.images_left = []
         self.index = 0
@@ -42,6 +23,7 @@ class Player():
         self.vel_y = 0
         self.jumped = False
         self.direction = 0
+        self.world = world
 
         
     def update(self):
@@ -104,14 +86,14 @@ class Player():
            
         ###### -Collisions- ######
         # Check for collisions in the x-direction
-        for tile in world.tile_list:
+        for tile in self.world.tile_list:
             # Check if the character's rectangle collides with the current tile
             if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                 # If there is a collision, set dx to zero to stop the character from moving in the x-direction
                 dx = 0
 
         # Check for collisions in the y-direction
-        for tile in world.tile_list:
+        for tile in self.world.tile_list:
             # Check if the character's rectangle collides with the current tile
             if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
                 # If there is a collision and the character is moving upwards (vel_y is negative), adjust dy and stop the upward movement
@@ -130,88 +112,4 @@ class Player():
 
         
         screen.blit(self.image, self.rect) 
-        pygame.draw.rect(screen, (255,255,255), self.rect, 2,)
-        
-               
-class World():
-    def __init__(self, data):
-        self.tile_list = []
-
-        grass_img = pygame.image.load('Nea_game_files/grass.png')
-        gravel_img = pygame.image.load('Nea_game_files/gravel.png')
-
-        row_count = 0
-        for row in data: # Each individual row
-            col_count = 0
-            for tile in row: # Each individual tile
-                if tile == 1:
-                    img = pygame.transform.scale(gravel_img, (tile_size,tile_size))
-                    img_rect = img.get_rect()
-                    img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size
-                    tile = (img, img_rect)
-                    self.tile_list.append(tile)
-                    
-                if tile == 2:
-                    img = pygame.transform.scale(grass_img, (tile_size,tile_size))
-                    img_rect = img.get_rect()
-                    img_rect.x = col_count * tile_size
-                    img_rect.y = row_count * tile_size
-                    tile = (img, img_rect)
-                    self.tile_list.append(tile)
-                col_count += 1
-            row_count += 1
-
-    def draw(self):
-        for tile in self.tile_list:
-            screen.blit(tile[0], tile[1])
-            pygame.draw.rect(screen, (255,255,255), tile[1], 2)
-
-
-world_data = [
-[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
-[1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 2, 0, 2, 2, 2, 2, 2, 1], 
-[1, 0, 0, 0, 0, 0, 2, 2, 2, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1], 
-[1, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
-[1, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
-[1, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-]
-
-
-world = World(world_data)
-player = Player(40, screen_height - 120)
-
-
-run = True
-while run:
-
-    clock.tick(fps)
-    
-    screen.blit(bg_img, (0,0))
-    # screen.blit(grnd_img, (100,100))
-
-    world.draw()
-    player.update()
-
-
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
-
-    pygame.display.update()
-
-pygame.quit()
+        # pygame.draw.rect(screen, (255,255,255), self.rect, 2,)
