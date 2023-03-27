@@ -53,15 +53,15 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x  = x
         self.rect.y  = y
-        self.move_direction = 1
-        self.move_counter = 0
+        self.enemy_direction = 1
+        self.enemy_counter = 0
         
     def update(self):
-        self.rect.x += self.move_direction
-        self.move_counter += 1
-        if self.move_counter > 40:
-            self.move_direction *= -1
-            self.move_counter *= -1
+        self.rect.x += self.enemy_direction
+        self.enemy_counter += 1
+        if self.enemy_counter > 40:
+            self.enemy_direction *= -1
+            self.enemy_counter *= -1
 
 
 class Lava(pygame.sprite.Sprite):
