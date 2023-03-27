@@ -33,8 +33,10 @@ while run:
 
     world.draw()
     player.update()
-    blob_group.update()
-    blob_group.draw(screen)
+    enemy_group.update()
+    enemy_group.draw(screen)
+    lava_group.draw(screen)
+    
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:

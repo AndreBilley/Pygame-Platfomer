@@ -26,7 +26,7 @@ bg_img = pygame.image.load('Nea_game_files/glacial_mountains.png')
 bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height - margin))
 gravel_img = pygame.image.load('Nea_game_files/gravel.png')
 grass_img = pygame.image.load('Nea_game_files/grass.png')
-blob_img = pygame.image.load('img/blob.png')
+enemy_img = pygame.image.load('Nea_game_files/Sprites/enemy_01.png')
 platform_x_img = pygame.image.load('img/platform_x.png')
 platform_y_img = pygame.image.load('img/platform_y.png')
 lava_img = pygame.image.load('img/lava.png')
@@ -86,20 +86,20 @@ def draw_world():
 					screen.blit(img, (col * tile_size, row * tile_size))
 				if world_data[row][col] == 3:
 					#enemy blocks
-					img = pygame.transform.scale(blob_img, (tile_size, int(tile_size * 0.75)))
+					img = pygame.transform.scale(enemy_img, (tile_size, int(tile_size * 0.75)))
 					screen.blit(img, (col * tile_size, row * tile_size + (tile_size * 0.25)))
 				if world_data[row][col] == 4:
-					#horizontally moving platform
-					img = pygame.transform.scale(platform_x_img, (tile_size, tile_size // 2))
-					screen.blit(img, (col * tile_size, row * tile_size))
-				if world_data[row][col] == 5:
-					#vertically moving platform
-					img = pygame.transform.scale(platform_y_img, (tile_size, tile_size // 2))
-					screen.blit(img, (col * tile_size, row * tile_size))
-				if world_data[row][col] == 6:
 					#lava
 					img = pygame.transform.scale(lava_img, (tile_size, tile_size // 2))
 					screen.blit(img, (col * tile_size, row * tile_size + (tile_size // 2)))
+				if world_data[row][col] == 5:
+					#horizontally moving platform
+					img = pygame.transform.scale(platform_x_img, (tile_size, tile_size // 2))
+					screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 6:
+					#vertically moving platform
+					img = pygame.transform.scale(platform_y_img, (tile_size, tile_size // 2))
+					screen.blit(img, (col * tile_size, row * tile_size))
 				if world_data[row][col] == 7:
 					#coin
 					img = pygame.transform.scale(coin_img, (tile_size // 2, tile_size // 2))

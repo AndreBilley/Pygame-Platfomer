@@ -30,8 +30,12 @@ class World():
                     self.tile_list.append(tile)
                 
                 if tile == 3:
-                    blob = Enemy(col_count * tile_size + 6.5, row_count * tile_size + 13)
-                    blob_group.add(blob)
+                    enemy = Enemy(col_count * tile_size + 6.5, row_count * tile_size + 13)
+                    enemy_group.add(enemy)
+                    
+                if tile == 4:
+                    lava = Lava(col_count * tile_size, row_count * tile_size + (tile_size//2))
+                    lava_group.add(lava)
                 col_count += 1
             row_count += 1
 
@@ -58,6 +62,14 @@ class Enemy(pygame.sprite.Sprite):
         if self.move_counter > 40:
             self.move_direction *= -1
             self.move_counter *= -1
-            
 
-blob_group = pygame.sprite.Group()
+
+class Lava(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        lava_img = pygame.image.load('Nea_game_files/lava.png')
+        self.image = pygame.transform.scale(lava_img, (tile_size, tile_size // 2))
+        self.rect = self.image.get_rect()
+        self.rect.x  = x
+        self.rect.y  = y
+        
