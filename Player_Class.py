@@ -114,7 +114,8 @@ class Player():
             if pygame.sprite.spritecollide(self, lava_group, False):
                 game_over = -1
             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
-            
+           
+            # Update player coodinates
             self.rect.x += dx
             self.rect.y += dy
         
@@ -122,3 +123,5 @@ class Player():
         
         screen.blit(self.image, self.rect) 
         # pygame.draw.rect(screen, (255,255,255), self.rect, 2,)
+        
+        return game_over

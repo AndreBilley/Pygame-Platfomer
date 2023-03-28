@@ -32,11 +32,12 @@ while run:
     screen.blit(bg_img, (0,0))
 
     world.draw()
-    player.update()
+    game_over = player.update(game_over)
     enemy_group.update()
     enemy_group.draw(screen)
     lava_group.draw(screen)
     
+    print(game_over)
     
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
