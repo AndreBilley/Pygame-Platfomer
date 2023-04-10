@@ -6,8 +6,8 @@ class World():
     def __init__(self, data):
         self.tile_list = []
 
-        grass_img = pygame.image.load('Nea_game_files/grass.png')
-        gravel_img = pygame.image.load('Nea_game_files/gravel.png')
+        grass_img = pygame.image.load('Nea_game_files/Map/grass.png')
+        gravel_img = pygame.image.load('Nea_game_files/Map/gravel.png')
 
         row_count = 0
         for row in data: # Each individual row
@@ -67,9 +67,38 @@ class Enemy(pygame.sprite.Sprite):
 class Lava(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        lava_img = pygame.image.load('Nea_game_files/lava.png')
+        lava_img = pygame.image.load('Nea_game_files/Map/lava.png')
         self.image = pygame.transform.scale(lava_img, (tile_size, tile_size // 2))
         self.rect = self.image.get_rect()
         self.rect.x  = x
         self.rect.y  = y
         
+class Button():
+    def __init__(self, x, y, image):
+        self.image = image
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.clicked = False
+        
+    def draw(self):
+        action = False
+        
+        # Get mouse position
+        pos = pygame.mouse.get_pos()
+        
+        # Check mouse collision and clicked conditions
+        if self.rect.collidepoint(pos):
+            # print('Mouse touching')
+            if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
+                action = True
+                self.clicked = True
+                print('Button clicked')
+                
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
+        
+       # Draw button
+        screen.blit(self.image, self.rect)
+        
+        return action
