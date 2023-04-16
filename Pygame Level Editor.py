@@ -22,15 +22,15 @@ pygame.display.set_caption('Level Editor')
 #load images
 # sun_img = pygame.image.load('img/sun.png')
 # sun_img = pygame.transform.scale(sun_img, (tile_size, tile_size))
-bg_img = pygame.image.load('Nea_game_files/glacial_mountains.png')
+bg_img = pygame.image.load('Nea_game_files/Map/glacial_mountains.png')
 bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height - margin))
-gravel_img = pygame.image.load('Nea_game_files/gravel.png')
-grass_img = pygame.image.load('Nea_game_files/grass.png')
+gravel_img = pygame.image.load('Nea_game_files/Map/gravel.png')
+grass_img = pygame.image.load('Nea_game_files/Map/grass.png')
 enemy_img = pygame.image.load('Nea_game_files/Sprites/enemy_01.png')
 platform_x_img = pygame.image.load('img/platform_x.png')
 platform_y_img = pygame.image.load('img/platform_y.png')
-lava_img = pygame.image.load('img/lava.png')
-coin_img = pygame.image.load('img/coin.png')
+lava_img = pygame.image.load('Nea_game_files/Map/lava.png')
+emerald_img = pygame.image.load('Nea_game_files/Map/Emerald.png')
 exit_img = pygame.image.load('img/exit.png')
 save_img = pygame.image.load('img/save_btn.png')
 load_img = pygame.image.load('img/load_btn.png')
@@ -93,23 +93,21 @@ def draw_world():
 					img = pygame.transform.scale(lava_img, (tile_size, tile_size // 2))
 					screen.blit(img, (col * tile_size, row * tile_size + (tile_size // 2)))
 				if world_data[row][col] == 5:
-					#horizontally moving platform
-					img = pygame.transform.scale(platform_x_img, (tile_size, tile_size // 2))
-					screen.blit(img, (col * tile_size, row * tile_size))
-				if world_data[row][col] == 6:
-					#vertically moving platform
-					img = pygame.transform.scale(platform_y_img, (tile_size, tile_size // 2))
-					screen.blit(img, (col * tile_size, row * tile_size))
-				if world_data[row][col] == 7:
-					#coin
-					img = pygame.transform.scale(coin_img, (tile_size // 2, tile_size // 2))
-					screen.blit(img, (col * tile_size + (tile_size // 4), row * tile_size + (tile_size // 4)))
-				if world_data[row][col] == 8:
 					#exit
 					img = pygame.transform.scale(exit_img, (tile_size, int(tile_size * 1.5)))
 					screen.blit(img, (col * tile_size, row * tile_size - (tile_size // 2)))
-
-
+				if world_data[row][col] == 6:
+					#coin
+					img = pygame.transform.scale(emerald_img, (tile_size // 2, tile_size // 2))
+					screen.blit(img, (col * tile_size + (tile_size // 4), row * tile_size + (tile_size // 4)))
+				if world_data[row][col] == 7:
+					#horizontally moving platform
+					img = pygame.transform.scale(platform_x_img, (tile_size, tile_size // 2))
+					screen.blit(img, (col * tile_size, row * tile_size))
+				if world_data[row][col] == 8:
+					#vertically moving platform
+					img = pygame.transform.scale(platform_y_img, (tile_size, tile_size // 2))
+					screen.blit(img, (col * tile_size, row * tile_size))
 
 class Button():
 	def __init__(self, x, y, image):

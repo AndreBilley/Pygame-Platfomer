@@ -34,10 +34,15 @@ class World():
                     enemy_group.add(enemy)
                     
                 if tile == 4:
-                    lava = Lava(col_count * tile_size, row_count * tile_size + (tile_size//2))
+                    lava = Lava(col_count * tile_size, row_count * tile_size + (tile_size/2))
                     lava_group.add(lava)
+                    
+                if tile == 5:
+                    exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size/2))
+                    exit_group.add(exit)
                 col_count += 1
             row_count += 1
+            
 
     def draw(self):
         for tile in self.tile_list:
@@ -72,6 +77,15 @@ class Lava(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x  = x
         self.rect.y  = y
+
+class Exit(pygame.sprite.Sprite):
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        lava_img = pygame.image.load('Nea_game_files/Map/exit.png')
+        self.image = pygame.transform.scale(lava_img, (tile_size, tile_size * 1.5))
+        self.rect = self.image.get_rect()
+        self.rect.x  = x
+        self.rect.y  = y
         
 class Button():
     def __init__(self, x, y, image):
@@ -89,11 +103,9 @@ class Button():
         
         # Check mouse collision and clicked conditions
         if self.rect.collidepoint(pos):
-            # print('Mouse touching')
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 action = True
                 self.clicked = True
-                print('Button clicked')
                 
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False

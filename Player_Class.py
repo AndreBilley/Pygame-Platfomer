@@ -40,6 +40,7 @@ class Player():
             ###### -Jump- ######
             if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) and self.jumped == False and self.in_air == False:
                 self.jumped = True
+                self.in_air = True
                 self.vel_y = -15
 
 
@@ -67,7 +68,6 @@ class Player():
                     self.image = self.images_left[self.index]
             
             ###### -Collisions- ######
-            self.in_air = True
             # Check for collisions in the x-direction
             for tile in self.world.tile_list:
                 # Check if the character's rectangle collides with the current tile
@@ -92,10 +92,13 @@ class Player():
                         
             # Check for collision with enemies
             if pygame.sprite.spritecollide(self, enemy_group, False):
-                game_over = -1
+                game_over = -2
             # Check for collision with lava
             if pygame.sprite.spritecollide(self, lava_group, False):
                 game_over = -1
+            # Check for collision with exit
+            if pygame.sprite.spritecollide(self, exit_group, False):
+                game_over = 1
             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
            
             # Update player coodinates
@@ -104,12 +107,12 @@ class Player():
         
         elif game_over == -1: # If touching lava, character's soul will ascend
             self.image = self.dead
-            if self.rect.y > 200:
+            if self.rect.y > -40:
                 self.rect.y -= 5
         
         elif game_over == -2: # If touching enemy, character's soul will descend
             self.image = self.dead
-            if self.rect.y > 200:
+            if self.rect.y < 800:
                 self.rect.y += 5
 
         
@@ -141,4 +144,4 @@ class Player():
         self.jumped = False
         self.direction = 0
         self.world = world
-        self.in_air = True
+        self.in_air = False
