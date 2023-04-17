@@ -6,6 +6,7 @@ max_levels = 3
 tile_size = 40
 game_cond = 0
 start_screen = True
+paused = False
 screen = pygame.display.set_mode((screen_width, screen_height))
 enemy_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()

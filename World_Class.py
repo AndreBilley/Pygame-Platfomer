@@ -8,6 +8,7 @@ class World():
 
         grass_img = pygame.image.load('Nea_game_files/Map/grass.png')
         gravel_img = pygame.image.load('Nea_game_files/Map/gravel.png')
+        emerald_forest_sign = pygame.image.load('Nea_game_files/Map/EmeraldForest_sign.png')
 
         row_count = 0
         for row in data: # Each individual row
@@ -40,9 +41,18 @@ class World():
                 if tile == 5:
                     exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size/2))
                     exit_group.add(exit)
+                    
+                if tile == 6:
+                    img = pygame.transform.scale(emerald_forest_sign, (tile_size*1.5,tile_size*1.5))
+                    img_rect = img.get_rect()
+                    img_rect.x = col_count * tile_size
+                    img_rect.y = row_count * tile_size - 20
+                    tile = (img, img_rect)
+                    self.tile_list.append(tile)                
+    
                 col_count += 1
             row_count += 1
-            
+                
 
     def draw(self):
         for tile in self.tile_list:
