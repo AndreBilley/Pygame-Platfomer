@@ -28,6 +28,8 @@ title_img = pygame.image.load('Nea_game_files/Map/Title_IMG.png')
 if path.exists(f'level{level}_data'):
     pickle_in = open(f'level{level}_data', 'rb')
     world_data = pickle.load(pickle_in)
+# else:
+#     print(f"Error: level{level}_data file not found")
     
     
 # Class instances
@@ -46,9 +48,11 @@ def reset_level(level, world):
     if path.exists(f'level{level}_data'):
         pickle_in = open(f'level{level}_data', 'rb')
         world_data = pickle.load(pickle_in)
-    world = World(world_data)        
-
-    return world
+        world = World(world_data)        
+        return world
+    # else:
+    #     print(f"Error: Level{level}_data file not found")
+    #     return None
 
 
 # Run funtions
@@ -67,29 +71,38 @@ while run:
             run = False
     else:
         world.draw()
-        
-        if game_over == 0:
+        # Game is running
+        if game_cond == 0:
             enemy_group.update()
         
-        elif game_over < 0 and restart_button.draw():
-            player.reset(40, screen_height - 120, world)
-            game_over = 0
+        # If player has died
+        elif game_cond < 0 and restart_button.draw():
+            world_data = []
+            world = reset_level(level, world)
+            game_cond = 0
         
-        if game_over == 1:
+        # If player has completed level
+        if game_cond == 1:
             level += 1
             if level <= max_levels:
                 # reset level
                 world_data = []
                 world = reset_level(level, world)
-                game_over = 0
-            else:
+                game_cond = 0
+
+            else: # If player has completed last level/game
                 # restart game
-                pass
+                if restart_button.draw():
+                    level = 1
+                # reset level
+                world_data = []
+                world = reset_level(level, world)
+                game_cond = 0
             
         enemy_group.draw(screen)
         lava_group.draw(screen)
         exit_group.draw(screen)
-        game_over = player.update(game_over)
+        game_cond = player.update(game_cond, world)
 
     
     for event in pygame.event.get():

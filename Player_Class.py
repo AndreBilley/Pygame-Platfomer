@@ -7,7 +7,7 @@ class Player():
         self.reset(x, y, world)
 
         
-    def update(self, game_over):
+    def update(self, game_over, world):
         dx,dy = 0,0
         walk_cooldown = 4
   
@@ -69,14 +69,14 @@ class Player():
             
             ###### -Collisions- ######
             # Check for collisions in the x-direction
-            for tile in self.world.tile_list:
+            for tile in world.tile_list:
                 # Check if the character's rectangle collides with the current tile
                 if tile[1].colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
                     # If there is a collision, set dx to zero to stop the character from moving in the x-direction
                     dx = 0
 
             # Check for collisions in the y-direction
-            for tile in self.world.tile_list:
+            for tile in world.tile_list:
                 # Check if the character's rectangle collides with the current tile
                 if tile[1].colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
                     # If there is a collision and the character is jumping (vel_y is negative), adjust dy and stop the upward movement

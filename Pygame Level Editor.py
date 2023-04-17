@@ -32,8 +32,10 @@ platform_y_img = pygame.image.load('img/platform_y.png')
 lava_img = pygame.image.load('Nea_game_files/Map/lava.png')
 emerald_img = pygame.image.load('Nea_game_files/Map/Emerald.png')
 exit_img = pygame.image.load('img/exit.png')
-save_img = pygame.image.load('img/save_btn.png')
-load_img = pygame.image.load('img/load_btn.png')
+save_img = pygame.image.load('Nea_game_files/Buttons/Save_BTN.png')
+save_img = pygame.transform.scale(save_img, (168,60.7))
+load_img = pygame.image.load('Nea_game_files/Buttons/Load_BTN.png')
+load_img = pygame.transform.scale(load_img, (168,60.7))
 
 
 #define game variables
@@ -43,6 +45,7 @@ level = 1
 #define colours
 white = (255, 255, 255)
 green = (144, 201, 120)
+black = (0,0,0)
 
 font = pygame.font.SysFont('Futura', 24)
 
@@ -137,8 +140,8 @@ class Button():
 		return action
 
 #create load and save buttons
-save_button = Button(screen_width // 2 - 150, screen_height - 80, save_img)
-load_button = Button(screen_width // 2 + 50, screen_height - 80, load_img)
+save_button = Button(screen_width // 2 - 210, screen_height - 80, save_img)
+load_button = Button(screen_width // 2, screen_height - 80, load_img)
 
 #main game loop
 run = True
@@ -154,7 +157,7 @@ while run:
 	#load and save level
 	if save_button.draw():
 		#save level data
-		pickle_out = open(f'level{level}_data', 'wb')
+		pickle_out = open(f'level{level}_data','wb')
 		pickle.dump(world_data, pickle_out)
 		pickle_out.close()
 	if load_button.draw():
@@ -170,8 +173,8 @@ while run:
 
 
 	#text showing current level
-	draw_text(f'Level: {level}', font, white, tile_size, screen_height - 60)
-	draw_text('Press UP or DOWN to change level', font, white, tile_size, screen_height - 40)
+	draw_text(f'Level: {level}', font, black, tile_size - 20, screen_height - 40)
+	draw_text('Press UP or DOWN to change level', font, black, tile_size - 20, screen_height - 20)
 
 	#event handler
 	for event in pygame.event.get():

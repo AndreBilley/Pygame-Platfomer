@@ -50,17 +50,21 @@ class World():
             # pygame.draw.rect(screen, (255,255,255), tile[1], 2)
      
      
-class Enemy(pygame.sprite.Sprite):
-    def __init__(self, x, y):
+class Entity(pygame.sprite.Sprite):
+    def __init__(self, image_path, x, y, width, height):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.image.load('Nea_game_files/Sprites/enemy_01.png')
-        self.image = pygame.transform.scale(self.image, (27,27))
+        entity_img = pygame.image.load(image_path)
+        self.image = pygame.transform.scale(entity_img, (width, height))
         self.rect = self.image.get_rect()
-        self.rect.x  = x
-        self.rect.y  = y
+        self.rect.x = x
+        self.rect.y = y
+
+class Enemy(Entity):
+    def __init__(self, x, y):
+        super().__init__('Nea_game_files/Sprites/enemy_01.png', x, y, 27, 27)
         self.enemy_direction = 1
         self.enemy_counter = 0
-        
+
     def update(self):
         self.rect.x += self.enemy_direction
         self.enemy_counter += 1
@@ -68,24 +72,13 @@ class Enemy(pygame.sprite.Sprite):
             self.enemy_direction *= -1
             self.enemy_counter *= -1
 
-
-class Lava(pygame.sprite.Sprite):
+class Lava(Entity):
     def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        lava_img = pygame.image.load('Nea_game_files/Map/lava.png')
-        self.image = pygame.transform.scale(lava_img, (tile_size, tile_size // 2))
-        self.rect = self.image.get_rect()
-        self.rect.x  = x
-        self.rect.y  = y
+        super().__init__('Nea_game_files/Map/lava.png', x, y, tile_size, tile_size // 2)
 
-class Exit(pygame.sprite.Sprite):
+class Exit(Entity):
     def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        lava_img = pygame.image.load('Nea_game_files/Map/exit.png')
-        self.image = pygame.transform.scale(lava_img, (tile_size, tile_size * 1.5))
-        self.rect = self.image.get_rect()
-        self.rect.x  = x
-        self.rect.y  = y
+        super().__init__('Nea_game_files/Map/exit.png', x, y, tile_size, tile_size * 1.5)
         
 class Button():
     def __init__(self, x, y, image):
