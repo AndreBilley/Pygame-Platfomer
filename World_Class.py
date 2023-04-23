@@ -50,9 +50,9 @@ class World():
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
                     
-                if tile == 7:
-                    emerald = Emerald(col_count * tile_size + (tile_size / 2), row_count * tile_size + (tile_size / 2))
-                    emerald_group.add(emerald)                
+                # if tile == 7:
+                #     emerald = Emerald(col_count * tile_size + (tile_size / 2), row_count * tile_size + (tile_size / 2))
+                #     emerald_group.add(emerald)                
     
                 col_count += 1
             row_count += 1
@@ -124,8 +124,8 @@ class Button():
         
         # Draw button
         screen.blit(self.image, self.rect)
-        # Icons
-        score_icon = Emerald(tile_size / 2, tile_size / 2)
-        emerald_group.add(score_icon)
                 
         return action
+# Icons
+score_icon = Emerald(screen_width - 140, 20)
+# emerald_group.add(score_icon)

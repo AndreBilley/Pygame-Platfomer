@@ -8,11 +8,10 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 # Level configuration
 game_cond = 0
 level = 1
-max_levels = 1
+max_levels = 3
 emeralds = 0
 start_screen = True
 paused = False
-# Sprite configuration
 enemy_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()
 emerald_group = pygame.sprite.Group()
