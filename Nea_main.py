@@ -21,6 +21,8 @@ mountains_img = pygame.transform.scale(mountains_img, (screen_width, screen_heig
 greenforest_img = pygame.image.load('Nea_game_files/Map/greenforest.png')
 greenforest_img = pygame.transform.scale(greenforest_img, (screen_width, screen_height))
 bg_img = mountains_img
+ground_img = pygame.image.load('Nea_game_files/Map/grass.png')
+ground_img = pygame.transform.scale(ground_img, (screen_width, 200))
 restart_img = pygame.image.load('Nea_game_files/Buttons/Restart_BTN.png')
 start_img = pygame.image.load('Nea_game_files/Buttons/Start_BTN.png')
 exit_img = pygame.image.load('Nea_game_files/Buttons/Exit_BTN.png')
@@ -67,6 +69,7 @@ def main_menu():
     global run
     # global emerald_group
     screen.blit(title_img, (screen_width/2-261.5, 40))
+    screen.blit(ground_img, (0, 600))
     if start_button.draw():
         start_screen = False
     if exit_button.draw():
@@ -98,8 +101,8 @@ def update_score():
     # Check for collision with emerald
     if pygame.sprite.spritecollide(player, emerald_group, True):
         emeralds += 1
-        print(f'Emeralds: {emeralds}')
-    draw_text('X ' + str(emeralds), UI_font, white, screen_width - 120, 5)
+        print(f'Emeralds collected: {emeralds}')
+    # draw_text('X ' + str(emeralds), UI_font, white, screen_width - 120, 5)
     
     
 
@@ -124,7 +127,7 @@ while run:
         # Game is running
         if game_cond == 0:
             enemy_group.update()
-            # update_score()
+            update_score()
             
         # Pause menu functionality
         if paused:
@@ -135,7 +138,7 @@ while run:
         
         # If player has died
         if game_cond < 0:
-            draw_text('YOU LOSE', font, red, (screen_width / 2) - 140, screen_height / 2 - 200)
+            # draw_text('YOU LOSE', font, red, (screen_width / 2) - 140, screen_height / 2 - 200)
             if restart_button.draw():
                 world_data = []
                 world = reset_level(level, world)
@@ -154,7 +157,7 @@ while run:
                 game_cond = 0
 
             else: # If player has completed last level/game
-                draw_text('YOU WIN!', font, green, (screen_width / 2) - 140, screen_height / 2 - 200)
+                # draw_text('YOU WIN!', font, green, (screen_width / 2) - 140, screen_height / 2 - 200)
                 # restart game
                 if restart_button.draw():
                     level = 1
