@@ -106,7 +106,7 @@ def draw_world():
 					screen.blit(img, (col * tile_size, row * tile_size - 20))     
      
 				if world_data[row][col] == 7:
-					#coin
+					#emerald
 					img = pygame.transform.scale(emerald_img, (tile_size // 2, tile_size // 2))
 					screen.blit(img, (col * tile_size + (tile_size // 4), row * tile_size + (tile_size // 4)))
 				if world_data[row][col] == 8:

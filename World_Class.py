@@ -48,7 +48,11 @@ class World():
                     img_rect.x = col_count * tile_size
                     img_rect.y = row_count * tile_size - 20
                     tile = (img, img_rect)
-                    self.tile_list.append(tile)                
+                    self.tile_list.append(tile)
+                    
+                if tile == 7:
+                    emerald = Emerald(col_count * tile_size + (tile_size / 2), row_count * tile_size + (tile_size / 2))
+                    emerald_group.add(emerald)                
     
                 col_count += 1
             row_count += 1
@@ -84,7 +88,12 @@ class Enemy(Entity):
 
 class Lava(Entity):
     def __init__(self, x, y):
-        super().__init__('Nea_game_files/Map/lava.png', x, y, tile_size, tile_size // 2)
+        super().__init__('Nea_game_files/Map/lava.png', x, y, tile_size, tile_size / 2)
+
+class Emerald(Entity):
+    def __init__(self, x, y):
+        super().__init__('Nea_game_files/Map/emerald.png', x, y, tile_size / 1.5 , tile_size / 1.5)
+        self.rect.center = (x, y)
 
 class Exit(Entity):
     def __init__(self, x, y):
@@ -113,7 +122,10 @@ class Button():
         if pygame.mouse.get_pressed()[0] == 0:
             self.clicked = False
         
-       # Draw button
+        # Draw button
         screen.blit(self.image, self.rect)
-        
+        # Icons
+        score_icon = Emerald(tile_size / 2, tile_size / 2)
+        emerald_group.add(score_icon)
+                
         return action

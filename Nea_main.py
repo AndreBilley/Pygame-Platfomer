@@ -82,7 +82,21 @@ def pause_menu():
         paused = False
     if exit_button.draw():
         run = False
-       
+    
+def draw_text(text, font, text_col, x, y):
+    img = font.render(text, True, text_col)
+    screen.blit(img, (x, y))
+    
+   
+# Update score
+def update_score():
+    global emeralds
+    # Check for collision with emerald
+    if pygame.sprite.spritecollide(player, emerald_group, True):
+        emeralds += 1
+        print(f'Emeralds: {emeralds}')
+    draw_text('X ' + str(emeralds), UI_font, white, tile_size - 10, 10)
+    
     
 
 
@@ -106,7 +120,8 @@ while run:
         # Game is running
         if game_cond == 0:
             enemy_group.update()
-            
+            update_score()
+                
         # Pause menu functionality
         if paused:
             pause_menu()
@@ -116,9 +131,11 @@ while run:
         
         # If player has died
         if game_cond < 0 and restart_button.draw():
+            draw_text('YOU LOSE!', font, red, (screen_width / 2) - 140, screen_height / 2)
             world_data = []
             world = reset_level(level, world)
             game_cond = 0
+            emeralds = 0
         
         # If player has completed level
         if game_cond == 1:
@@ -129,7 +146,9 @@ while run:
                 world = reset_level(level, world)
                 game_cond = 0
 
-            else: # If player has completed last level/game
+            # If player has completed last level/game
+            else:
+                draw_text('YOU WIN!', font, green, (screen_width / 2) - 140, screen_height / 2)
                 # restart game
                 if restart_button.draw():
                     level = 1
@@ -137,9 +156,11 @@ while run:
                 world_data = []
                 world = reset_level(level, world)
                 game_cond = 0
+                emeralds = 0
             
         enemy_group.draw(screen)
         lava_group.draw(screen)
+        emerald_group.draw(screen)
         exit_group.draw(screen)
         pause_button.draw()
         game_cond = player.update(game_cond, world)
