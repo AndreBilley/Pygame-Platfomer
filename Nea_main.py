@@ -21,8 +21,8 @@ mountains_img = pygame.transform.scale(mountains_img, (screen_width, screen_heig
 greenforest_img = pygame.image.load('Nea_game_files/Map/greenforest.png')
 greenforest_img = pygame.transform.scale(greenforest_img, (screen_width, screen_height))
 bg_img = mountains_img
-ground_img = pygame.image.load('Nea_game_files/Map/grass.png')
-ground_img = pygame.transform.scale(ground_img, (screen_width, 200))
+ground_img = pygame.image.load('Nea_game_files/Map/ground.png')
+ground_img = pygame.transform.scale(ground_img, (screen_width, 150))
 restart_img = pygame.image.load('Nea_game_files/Buttons/Restart_BTN.png')
 start_img = pygame.image.load('Nea_game_files/Buttons/Start_BTN.png')
 exit_img = pygame.image.load('Nea_game_files/Buttons/Exit_BTN.png')
@@ -69,7 +69,7 @@ def main_menu():
     global run
     # global emerald_group
     screen.blit(title_img, (screen_width/2-261.5, 40))
-    screen.blit(ground_img, (0, 600))
+    screen.blit(ground_img, (0, 650))
     if start_button.draw():
         start_screen = False
     if exit_button.draw():
