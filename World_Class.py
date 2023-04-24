@@ -128,4 +128,4 @@ class Button():
         return action
 # Icons
 score_icon = Emerald(screen_width - 140, 20)
-# emerald_group.add(score_icon)
+emerald_group.add(score_icon)

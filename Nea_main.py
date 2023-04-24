@@ -57,6 +57,7 @@ def reset_level(level, world):
     enemy_group.empty()
     lava_group.empty()
     exit_group.empty()
+    emerald_group.empty()
     if path.exists(f'level{level}_data'):
         pickle_in = open(f'level{level}_data', 'rb')
         world_data = pickle.load(pickle_in)
@@ -87,22 +88,19 @@ def pause_menu():
         paused = False
     if quit_button.draw():
         run = False
-        
-        
-           
+              
+# Draw text           
 def draw_text(text, font, text_col, x, y):
     img = font.render(text, True, text_col)
     screen.blit(img, (x, y))
-    
-   
+     
 # Update score
 def update_score():
     global emeralds
     # Check for collision with emerald
     if pygame.sprite.spritecollide(player, emerald_group, True):
         emeralds += 1
-        print(f'Emeralds collected: {emeralds}')
-    # draw_text('X ' + str(emeralds), UI_font, white, screen_width - 120, 5)
+    draw_text('X ' + str(emeralds), UI_font, white, screen_width - 120, 5)
     
     
 
@@ -138,7 +136,7 @@ while run:
         
         # If player has died
         if game_cond < 0:
-            # draw_text('YOU LOSE', font, red, (screen_width / 2) - 140, screen_height / 2 - 200)
+            draw_text('YOU LOSE', font, red, (screen_width / 2) - 140, screen_height / 2 - 200)
             if restart_button.draw():
                 world_data = []
                 world = reset_level(level, world)
@@ -157,7 +155,7 @@ while run:
                 game_cond = 0
 
             else: # If player has completed last level/game
-                # draw_text('YOU WIN!', font, green, (screen_width / 2) - 140, screen_height / 2 - 200)
+                draw_text('YOU WIN!', font, green, (screen_width / 2) - 140, screen_height / 2 - 200)
                 # restart game
                 if restart_button.draw():
                     level = 1
