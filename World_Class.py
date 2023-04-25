@@ -127,5 +127,5 @@ class Button():
                 
         return action
 # Icons
-score_icon = Emerald(screen_width - 140, 20)
+score_icon = Emerald(screen_width - 130, 20)
 emerald_group.add(score_icon)

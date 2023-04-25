@@ -90,9 +90,15 @@ def pause_menu():
         run = False
               
 # Draw text           
-def draw_text(text, font, text_col, x, y):
-    img = font.render(text, True, text_col)
-    screen.blit(img, (x, y))
+def draw_text(text, size, text_col, x, y):
+    global text_font
+    global UI_font
+    if size == 'text':
+        img = text_font.render(text, True, text_col)
+        screen.blit(img, (x, y))
+    elif size == 'UI':
+        img = UI_font.render(text, True, text_col)
+        screen.blit(img, (x, y)) 
      
 # Update score
 def update_score():
@@ -100,7 +106,7 @@ def update_score():
     # Check for collision with emerald
     if pygame.sprite.spritecollide(player, emerald_group, True):
         emeralds += 1
-    draw_text('X ' + str(emeralds), UI_font, white, screen_width - 120, 5)
+    draw_text('X ' + str(emeralds), 'UI', yellow, screen_width - 110, 6)
     
     
 
@@ -136,7 +142,7 @@ while run:
         
         # If player has died
         if game_cond < 0:
-            draw_text('YOU LOSE', font, red, (screen_width / 2) - 140, screen_height / 2 - 200)
+            draw_text('YOU LOSE', 'text', red, (screen_width / 2) - 270, screen_height / 2 - 200)
             if restart_button.draw():
                 world_data = []
                 world = reset_level(level, world)
@@ -155,7 +161,7 @@ while run:
                 game_cond = 0
 
             else: # If player has completed last level/game
-                draw_text('YOU WIN!', font, green, (screen_width / 2) - 140, screen_height / 2 - 200)
+                draw_text('YOU WIN!', 'text', green, (screen_width / 2) - 270, screen_height / 2 - 200)
                 # restart game
                 if restart_button.draw():
                     level = 1
