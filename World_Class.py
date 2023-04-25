@@ -52,7 +52,11 @@ class World():
                     
                 if tile == 7:
                     emerald = Emerald(col_count * tile_size + (tile_size / 2), row_count * tile_size + (tile_size / 2))
-                    emerald_group.add(emerald)                
+                    emerald_group.add(emerald)
+                
+                if tile == 8:
+                    gold_exit = Gold_Exit(col_count * tile_size, row_count * tile_size - (tile_size/2))
+                    gold_exit_group.add(gold_exit)                
     
                 col_count += 1
             row_count += 1
@@ -98,6 +102,10 @@ class Emerald(Entity):
 class Exit(Entity):
     def __init__(self, x, y):
         super().__init__('Nea_game_files/Map/exit.png', x, y, tile_size, tile_size * 1.5)
+
+class Gold_Exit(Entity):
+    def __init__(self, x, y):
+        super().__init__('Nea_game_files/Map/exit2.png', x, y, tile_size, tile_size * 1.5)
         
 class Button():
     def __init__(self, x, y, image):

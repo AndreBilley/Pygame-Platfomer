@@ -31,7 +31,8 @@ platform_x_img = pygame.image.load('img/platform_x.png')
 platform_y_img = pygame.image.load('img/platform_y.png')
 lava_img = pygame.image.load('Nea_game_files/Map/lava.png')
 emerald_img = pygame.image.load('Nea_game_files/Map/Emerald.png')
-exit_img = pygame.image.load('img/exit.png')
+exit_img = pygame.image.load('Nea_game_files/Map/exit.png')
+gold_exit_img = pygame.image.load('Nea_game_files/Map/exit2.png')
 save_img = pygame.image.load('Nea_game_files/Buttons/Save_BTN.png')
 save_img = pygame.transform.scale(save_img, (168,60.7))
 load_img = pygame.image.load('Nea_game_files/Buttons/Load_BTN.png')
@@ -104,16 +105,19 @@ def draw_world():
 					#sign
 					img = pygame.transform.scale(emerald_forest_sign, (tile_size * 1.5, tile_size * 1.5))
 					screen.blit(img, (col * tile_size, row * tile_size - 20))     
-     
 				if world_data[row][col] == 7:
 					#emerald
 					img = pygame.transform.scale(emerald_img, (tile_size // 2, tile_size // 2))
 					screen.blit(img, (col * tile_size + (tile_size // 4), row * tile_size + (tile_size // 4)))
 				if world_data[row][col] == 8:
+					#gold exit
+					img = pygame.transform.scale(gold_exit_img, (tile_size, int(tile_size * 1.5)))
+					screen.blit(img, (col * tile_size, row * tile_size - (tile_size // 2)))
+				if world_data[row][col] == 9:
 					#horizontally moving platform
 					img = pygame.transform.scale(platform_x_img, (tile_size, tile_size // 2))
 					screen.blit(img, (col * tile_size, row * tile_size))
-				if world_data[row][col] == 9:
+				if world_data[row][col] == 10:
 					#vertically moving platform
 					img = pygame.transform.scale(platform_y_img, (tile_size, tile_size // 2))
 					screen.blit(img, (col * tile_size, row * tile_size))

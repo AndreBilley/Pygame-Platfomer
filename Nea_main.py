@@ -57,7 +57,8 @@ def reset_level(level, world):
     enemy_group.empty()
     lava_group.empty()
     exit_group.empty()
-    emerald_group.empty()
+    gold_exit_group.empty()
+    # emerald_group.empty()
     if path.exists(f'level{level}_data'):
         pickle_in = open(f'level{level}_data', 'rb')
         world_data = pickle.load(pickle_in)
@@ -68,7 +69,6 @@ def reset_level(level, world):
 def main_menu():
     global start_screen
     global run
-    # global emerald_group
     screen.blit(title_img, (screen_width/2-261.5, 40))
     screen.blit(ground_img, (0, 650))
     if start_button.draw():
@@ -106,7 +106,7 @@ def update_score():
     # Check for collision with emerald
     if pygame.sprite.spritecollide(player, emerald_group, True):
         emeralds += 1
-    draw_text('X ' + str(emeralds), 'UI', yellow, screen_width - 110, 6)
+    draw_text('X ' + str(emeralds), 'UI', green, screen_width - 110, 4)
     
     
 
@@ -152,8 +152,13 @@ while run:
                 run = False
         
         # If player has completed level
-        if game_cond == 1:
-            level += 1
+        if game_cond == 1 or game_cond == 3:
+            # regular exit
+            if game_cond == 1:
+                level += 1
+            # gold exit
+            if game_cond == 3:
+                level += 2
             if level <= max_levels:
                 # reset level
                 world_data = []
@@ -167,6 +172,7 @@ while run:
                     level = 1
                     # reset level
                     world_data = []
+                    bg_img = mountains_img
                     world = reset_level(level, world)
                     game_cond = 0
                     emeralds = 0
@@ -177,6 +183,7 @@ while run:
         lava_group.draw(screen)
         emerald_group.draw(screen)
         exit_group.draw(screen)
+        gold_exit_group.draw(screen)
         pause_button.draw()
         game_cond = player.update(game_cond, world)
 

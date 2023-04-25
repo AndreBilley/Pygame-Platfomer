@@ -7,11 +7,12 @@ class Player():
         self.reset(x, y, world)
 
         
-    def update(self, game_over, world):
+    def update(self, game_cond, world):
+        global level
         dx,dy = 0,0
         walk_cooldown = 4
   
-        if game_over == 0:        
+        if game_cond == 0:        
     ################## -Controls- ##################
             key = pygame.key.get_pressed()
             
@@ -92,25 +93,28 @@ class Player():
                         
             # Check for collision with enemies
             if pygame.sprite.spritecollide(self, enemy_group, False):
-                game_over = -2
+                game_cond = -2
             # Check for collision with lava
             if pygame.sprite.spritecollide(self, lava_group, False):
-                game_over = -1
+                game_cond = -1
             # Check for collision with exit
             if pygame.sprite.spritecollide(self, exit_group, False):
-                game_over = 1
+                game_cond = 1
+            # Check for collision with gold exit
+            if pygame.sprite.spritecollide(self, gold_exit_group, False):
+                game_cond = 3
             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
            
             # Update player coodinates
             self.rect.x += dx
             self.rect.y += dy
         
-        elif game_over == -1: # If touching lava, character's soul will ascend
+        elif game_cond == -1: # If touching lava, character's soul will ascend
             self.image = self.dead
             if self.rect.y > -40:
                 self.rect.y -= 5
         
-        elif game_over == -2: # If touching enemy, character's soul will descend
+        elif game_cond == -2: # If touching enemy, character's soul will descend
             self.image = self.dead
             if self.rect.y < 800:
                 self.rect.y += 5
@@ -119,7 +123,7 @@ class Player():
         screen.blit(self.image, self.rect) 
         # pygame.draw.rect(screen, (255,255,255), self.rect, 2,)
         
-        return game_over
+        return game_cond
     
     def reset(self, x, y, world):
         self.images_right = []
