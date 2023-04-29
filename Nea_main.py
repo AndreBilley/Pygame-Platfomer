@@ -32,6 +32,8 @@ paused_img = pygame.image.load('Nea_game_files/Map/Paused_Text.png')
 resume_img = pygame.image.load('Nea_game_files/Buttons/Resume_BTN.png')
 pause_img = pygame.image.load('Nea_game_files/Buttons/Pause_BTN.png')
 pause_img = pygame.transform.scale(pause_img, (36,42.5))
+emerald_img = pygame.image.load('Nea_game_files/Map/emerald.png')
+emerald_img = pygame.transform.scale(emerald_img, (tile_size / 1.5 , tile_size / 1.5))
 
 # Load level from file
 if path.exists(f'level{level}_data'):
@@ -57,8 +59,10 @@ def reset_level(level, world):
     enemy_group.empty()
     lava_group.empty()
     exit_group.empty()
+    emerald_group.empty()
     gold_exit_group.empty()
-    # emerald_group.empty()
+    powerup_group.empty()
+    player.stat_boost = False
     if path.exists(f'level{level}_data'):
         pickle_in = open(f'level{level}_data', 'rb')
         world_data = pickle.load(pickle_in)
@@ -103,10 +107,23 @@ def draw_text(text, size, text_col, x, y):
 # Update score
 def update_score():
     global emeralds
+    screen.blit(emerald_img, (screen_width - 137, 7))
     # Check for collision with emerald
     if pygame.sprite.spritecollide(player, emerald_group, True):
         emeralds += 1
+    if player.stat_boost:
+        if pygame.sprite.spritecollide(player, enemy_group, True):
+            emeralds += 2
     draw_text('X ' + str(emeralds), 'UI', green, screen_width - 110, 4)
+    
+def level_info():
+    global location
+    global level
+    global current_location
+    if level % 4 == 0 and level != 0:
+        current_location = (level // 4) % len(location)
+    draw_text(f'Level {level}', 'UI', green, screen_width/2 - 30, 5)
+    draw_text(f'Location: {location[current_location]}', 'UI', blue, screen_width/2 - 160, 45)
     
     
 
@@ -117,7 +134,7 @@ while run:
 
     clock.tick(fps)
     
-    if level > 1:
+    if level > 3:
         bg_img = greenforest_img
     
     screen.blit(bg_img, (0,0))
@@ -132,6 +149,7 @@ while run:
         if game_cond == 0:
             enemy_group.update()
             update_score()
+            level_info()
             
         # Pause menu functionality
         if paused:
@@ -148,6 +166,7 @@ while run:
                 world = reset_level(level, world)
                 game_cond = 0
                 emeralds = 0
+                player.stat_boost = False
             if quit_button.draw():
                 run = False
         
@@ -163,6 +182,7 @@ while run:
                 # reset level
                 world_data = []
                 world = reset_level(level, world)
+                player.stat_boost = False
                 game_cond = 0
 
             else: # If player has completed last level/game
@@ -185,6 +205,7 @@ while run:
         exit_group.draw(screen)
         gold_exit_group.draw(screen)
         pause_button.draw()
+        powerup_group.draw(screen)
         game_cond = player.update(game_cond, world)
 
     

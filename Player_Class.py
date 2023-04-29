@@ -39,10 +39,15 @@ class Player():
 
             
             ###### -Jump- ######
+            if pygame.sprite.spritecollide(self, powerup_group, True):
+                self.stat_boost = True
             if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) and self.jumped == False and self.in_air == False:
                 self.jumped = True
                 self.in_air = True
-                self.vel_y = -15
+                if self.stat_boost:
+                    self.vel_y = -22
+                else:
+                    self.vel_y = -15
 
 
             if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False:
@@ -52,8 +57,12 @@ class Player():
             
             #### -Gravity- ####
             self.vel_y += 1
-            if self.vel_y > 10:
-                self.vel_y = 10
+            if self.stat_boost:
+                if self.vel_y > 20:
+                    self.vel_y = 20
+            else:
+                if self.vel_y > 10:
+                    self.vel_y = 10
             dy += self.vel_y
             #~~~~~~~~~~~~~~~~~#    
             
@@ -90,7 +99,7 @@ class Player():
                         self.vel_y = 0
                         self.in_air = False
                         
-                        
+
             # Check for collision with enemies
             if pygame.sprite.spritecollide(self, enemy_group, False):
                 game_cond = -2
@@ -149,3 +158,4 @@ class Player():
         self.direction = 0
         self.world = world
         self.in_air = False
+        self.stat_boost = False

@@ -14,6 +14,7 @@ class World():
         for row in data: # Each individual row
             col_count = 0
             for tile in row: # Each individual tile
+                # Gravel block
                 if tile == 1:
                     img = pygame.transform.scale(gravel_img, (tile_size,tile_size))
                     img_rect = img.get_rect()
@@ -21,7 +22,7 @@ class World():
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
-                    
+                # Grass block
                 if tile == 2:
                     img = pygame.transform.scale(grass_img, (tile_size,tile_size))
                     img_rect = img.get_rect()
@@ -29,19 +30,19 @@ class World():
                     img_rect.y = row_count * tile_size
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
-                
+                # Enemy tile
                 if tile == 3:
                     enemy = Enemy(col_count * tile_size + 6.5, row_count * tile_size + 13)
                     enemy_group.add(enemy)
-                    
+                # Lava tile
                 if tile == 4:
                     lava = Lava(col_count * tile_size, row_count * tile_size + (tile_size/2))
                     lava_group.add(lava)
-                    
+                # Exit tile
                 if tile == 5:
                     exit = Exit(col_count * tile_size, row_count * tile_size - (tile_size/2))
                     exit_group.add(exit)
-                    
+                # Sign tile
                 if tile == 6:
                     img = pygame.transform.scale(emerald_forest_sign, (tile_size*1.5,tile_size*1.5))
                     img_rect = img.get_rect()
@@ -49,15 +50,19 @@ class World():
                     img_rect.y = row_count * tile_size - 20
                     tile = (img, img_rect)
                     self.tile_list.append(tile)
-                    
+                # Emerald tile
                 if tile == 7:
                     emerald = Emerald(col_count * tile_size + (tile_size / 2), row_count * tile_size + (tile_size / 2))
                     emerald_group.add(emerald)
-                
+                # Gold Exit tile
                 if tile == 8:
                     gold_exit = Gold_Exit(col_count * tile_size, row_count * tile_size - (tile_size/2))
                     gold_exit_group.add(gold_exit)                
-    
+                    
+                if tile == 9:
+                    powerup = Powerup(col_count * tile_size + (tile_size / 2), row_count * tile_size + (tile_size / 2))
+                    powerup_group.add(powerup)
+                    
                 col_count += 1
             row_count += 1
                 
@@ -99,6 +104,11 @@ class Emerald(Entity):
         super().__init__('Nea_game_files/Map/emerald.png', x, y, tile_size / 1.5 , tile_size / 1.5)
         self.rect.center = (x, y)
 
+class Powerup(Entity):
+    def __init__(self, x, y):
+        super().__init__('Nea_game_files/Map/powerup.png', x, y, tile_size / 1.5 , tile_size / 1.5)
+        self.rect.center = (x, y)
+
 class Exit(Entity):
     def __init__(self, x, y):
         super().__init__('Nea_game_files/Map/exit.png', x, y, tile_size, tile_size * 1.5)
@@ -134,6 +144,6 @@ class Button():
         screen.blit(self.image, self.rect)
                 
         return action
-# Icons
-score_icon = Emerald(screen_width - 130, 20)
-emerald_group.add(score_icon)
+# # Icons
+# score_icon = Emerald(screen_width - 130, 20)
+# emerald_group.add(score_icon)
