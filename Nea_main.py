@@ -1,6 +1,7 @@
 from logging import getLoggerClass
 import pygame
 from pygame.locals import *
+from pygame import mixer
 from Player_Class import *
 from Globals import *
 from World_Class import *
@@ -11,6 +12,10 @@ from os import path
 pygame.init()
 pygame.display.set_caption('Emerald Run')
 
+# Sounds setup
+pygame.mixer.pre_init(44100, -16, 2, 512)
+mixer.init()
+
 # FPS control
 clock = pygame.time.Clock()
 fps = 60
@@ -20,6 +25,8 @@ mountains_img = pygame.image.load('Nea_game_files/Map/mountains.png')
 mountains_img = pygame.transform.scale(mountains_img, (screen_width, screen_height))
 greenforest_img = pygame.image.load('Nea_game_files/Map/greenforest.png')
 greenforest_img = pygame.transform.scale(greenforest_img, (screen_width, screen_height))
+withered_willows_img = pygame.image.load('Nea_game_files/Map/withered_willows.png')
+withered_willows_img = pygame.transform.scale(withered_willows_img, (screen_width, screen_height))
 bg_img = mountains_img
 ground_img = pygame.image.load('Nea_game_files/Map/ground.png')
 ground_img = pygame.transform.scale(ground_img, (screen_width, 150))
@@ -69,14 +76,30 @@ def reset_level(level, world):
         world = World(world_data)        
         return world
 
+# Draw text           
+def draw_text(text, size, text_col, x, y):
+    global text_font
+    global UI_font
+    if size == 'text':
+        img = text_font.render(text, True, text_col)
+        screen.blit(img, (x, y))
+    elif size == 'UI':
+        img = UI_font.render(text, True, text_col)
+        screen.blit(img, (x, y)) 
+
 # Start screen
 def main_menu():
     global start_screen
     global run
+    title_music.play(0, 0, 5000)
     screen.blit(title_img, (screen_width/2-261.5, 40))
     screen.blit(ground_img, (0, 650))
+    draw_text('© 2023', 'UI', white, screen_width/2- 60, screen_height - 60)
     if start_button.draw():
         start_screen = False
+        # Change track
+        title_music.stop()
+        glacial_music.play(0, 0, 2000)
     if exit_button.draw():
         run = False       
 
@@ -91,18 +114,8 @@ def pause_menu():
         game_cond = 0
         paused = False
     if quit_button.draw():
-        run = False
-              
-# Draw text           
-def draw_text(text, size, text_col, x, y):
-    global text_font
-    global UI_font
-    if size == 'text':
-        img = text_font.render(text, True, text_col)
-        screen.blit(img, (x, y))
-    elif size == 'UI':
-        img = UI_font.render(text, True, text_col)
-        screen.blit(img, (x, y)) 
+        run = False      
+        
      
 # Update score
 def update_score():
@@ -110,9 +123,11 @@ def update_score():
     screen.blit(emerald_img, (screen_width - 137, 7))
     # Check for collision with emerald
     if pygame.sprite.spritecollide(player, emerald_group, True):
+        emerald_fx.play()
         emeralds += 1
     if player.stat_boost:
         if pygame.sprite.spritecollide(player, enemy_group, True):
+            emerald_fx.play()
             emeralds += 2
     draw_text('X ' + str(emeralds), 'UI', green, screen_width - 110, 4)
     
@@ -136,8 +151,17 @@ while run:
 
     clock.tick(fps)
     
-    if level > 3:
+    if current_location == 1:
         bg_img = greenforest_img
+        # Change track
+        glacial_music.stop()
+        e_forest_music.play(0, 0, 5000)
+    
+    if current_location == 2:
+        bg_img = withered_willows_img
+        # Change track
+        e_forest_music.stop()
+        w_willows_music.play(0, 0, 5000)
     
     screen.blit(bg_img, (0,0))
     
@@ -188,9 +212,14 @@ while run:
                 game_cond = 0
 
             else: # If player has completed last level/game
+                glacial_music.stop()
+                endgame_music.play(0, 0, 5000)
                 draw_text('YOU WIN!', 'text', green, (screen_width / 2) - 270, screen_height / 2 - 200)
                 # restart game
                 if restart_button.draw():
+                    # Change track
+                    endgame_music.stop()
+                    glacial_music.play(0, 0, 5000)
                     level = 1
                     # reset level
                     world_data = []

@@ -42,6 +42,7 @@ class Player():
             if pygame.sprite.spritecollide(self, powerup_group, True):
                 self.stat_boost = True
             if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) and self.jumped == False and self.in_air == False:
+                jump_fx.play() # Play jump sound
                 self.jumped = True
                 self.in_air = True
                 if self.stat_boost:
@@ -103,9 +104,11 @@ class Player():
             # Check for collision with enemies
             if pygame.sprite.spritecollide(self, enemy_group, False):
                 game_cond = -2
+                game_over_fx.play()
             # Check for collision with lava
             if pygame.sprite.spritecollide(self, lava_group, False):
                 game_cond = -1
+                game_over_fx.play()
             # Check for collision with exit
             if pygame.sprite.spritecollide(self, exit_group, False):
                 game_cond = 1
