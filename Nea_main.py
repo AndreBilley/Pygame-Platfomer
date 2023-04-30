@@ -117,11 +117,13 @@ def update_score():
     draw_text('X ' + str(emeralds), 'UI', green, screen_width - 110, 4)
     
 def level_info():
+    # Declaring global variables
     global location
     global level
     global current_location
-    if level % 4 == 0 and level != 0:
-        current_location = (level // 4) % len(location)
+    if level % 4 == 0 and level != 0: # Every 4th level (Every 3 levels)
+        current_location = (level // 4) % len(location) # Current location will increase on every 4th level
+    # Displaying text on window
     draw_text(f'Level {level}', 'UI', green, screen_width/2 - 30, 5)
     draw_text(f'Location: {location[current_location]}', 'UI', blue, screen_width/2 - 160, 45)
     
