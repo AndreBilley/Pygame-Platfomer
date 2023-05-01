@@ -9,7 +9,9 @@ class Player():
         
     def update(self, game_cond, world):
         global level
+        global platform
         dx,dy = 0,0
+        col_thresh = 22
         walk_cooldown = 4
   
         if game_cond == 0:        
@@ -115,6 +117,27 @@ class Player():
             # Check for collision with gold exit
             if pygame.sprite.spritecollide(self, gold_exit_group, False):
                 game_cond = 3
+                
+                
+            # Check for collision with platforms
+            for platform in platform_group:
+                # Collision in the x direction
+                if platform.rect.colliderect(self.rect.x + dx, self.rect.y, self.width, self.height):
+                    dx = 0
+                # Collision in the y direction
+                if platform.rect.colliderect(self.rect.x, self.rect.y + dy, self.width, self.height):
+                    # Check if below platform
+                    if abs((self.rect.top + dy) - platform.rect.bottom) < col_thresh:
+                        self.vel_y = 0
+                        dy = platform.rect.bottom - self.rect.top
+                    # Check if above platform
+                    elif abs((self.rect.bottom + dy) - platform.rect.top) < col_thresh:
+                        self.rect.bottom = platform.rect.top - 1
+                        self.in_air = False
+                        dy = 0
+                    # Move sideways with platform
+                    if platform.move_x != 0:
+                        self.rect.x += platform.move_direction
             #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~# 
            
             # Update player coodinates
@@ -133,7 +156,6 @@ class Player():
 
         
         screen.blit(self.image, self.rect) 
-        # pygame.draw.rect(screen, (255,255,255), self.rect, 2,)
         
         return game_cond
     

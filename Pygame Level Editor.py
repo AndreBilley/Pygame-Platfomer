@@ -35,6 +35,8 @@ load_img = pygame.image.load('Nea_game_files/Buttons/Load_BTN.png')
 load_img = pygame.transform.scale(load_img, (168,60.7))
 emerald_forest_sign = pygame.image.load('Nea_game_files/Map/EmeraldForest_sign.png')
 powerup_img = pygame.image.load('Nea_game_files/Map/powerup.png')
+platform_x = pygame.image.load('Nea_game_files/Map/platform_x.png')
+platform_y = pygame.image.load('Nea_game_files/Map/platform_y.png')
 
 #define game variables
 clicked = False
@@ -115,11 +117,11 @@ def draw_world():
 					screen.blit(img, (col * tile_size + (tile_size // 4), row * tile_size + (tile_size // 4)))
 				if world_data[row][col] == 10:
 					#horizontally moving platform
-					img = pygame.transform.scale(grass_img, (tile_size, tile_size // 2))
+					img = pygame.transform.scale(platform_x, (tile_size, tile_size // 2))
 					screen.blit(img, (col * tile_size, row * tile_size))
 				if world_data[row][col] == 11:
 					#vertically moving platform
-					img = pygame.transform.scale(grass_img, (tile_size, tile_size // 2))
+					img = pygame.transform.scale(platform_y, (tile_size, tile_size // 2))
 					screen.blit(img, (col * tile_size, row * tile_size))
 
 class Button():

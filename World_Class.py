@@ -78,7 +78,6 @@ class World():
     def draw(self):
         for tile in self.tile_list:
             screen.blit(tile[0], tile[1])
-            # pygame.draw.rect(screen, (255,255,255), tile[1], 2)
      
      
 class Entity(pygame.sprite.Sprite):
@@ -168,6 +167,3 @@ class Button():
         screen.blit(self.image, self.rect)
                 
         return action
-# # Icons
-# score_icon = Emerald(screen_width - 130, 20)
-# emerald_group.add(score_icon)

@@ -27,6 +27,8 @@ greenforest_img = pygame.image.load('Nea_game_files/Map/greenforest.png')
 greenforest_img = pygame.transform.scale(greenforest_img, (screen_width, screen_height))
 withered_willows_img = pygame.image.load('Nea_game_files/Map/withered_willows.png')
 withered_willows_img = pygame.transform.scale(withered_willows_img, (screen_width, screen_height))
+infernal_caverns_img = pygame.image.load('Nea_game_files/Map/infernal_caverns.jpg')
+infernal_caverns_img = pygame.transform.scale(infernal_caverns_img, (screen_width, screen_height))
 bg_img = mountains_img
 ground_img = pygame.image.load('Nea_game_files/Map/ground.png')
 ground_img = pygame.transform.scale(ground_img, (screen_width, 150))
@@ -45,10 +47,7 @@ emerald_img = pygame.transform.scale(emerald_img, (tile_size / 1.5 , tile_size /
 # Load level from file
 if path.exists(f'level{level}_data'):
     pickle_in = open(f'level{level}_data', 'rb')
-    world_data = pickle.load(pickle_in)
-# else:
-#     print(f"Error: level{level}_data file not found")
-    
+    world_data = pickle.load(pickle_in)  
     
 # Class instances
 world = World(world_data)
@@ -69,6 +68,7 @@ def reset_level(level, world):
     emerald_group.empty()
     gold_exit_group.empty()
     powerup_group.empty()
+    platform_group.empty()
     player.stat_boost = False
     if path.exists(f'level{level}_data'):
         pickle_in = open(f'level{level}_data', 'rb')
@@ -114,8 +114,7 @@ def pause_menu():
         game_cond = 0
         paused = False
     if quit_button.draw():
-        run = False      
-        
+        run = False            
      
 # Update score
 def update_score():
@@ -136,7 +135,9 @@ def level_info():
     global location
     global level
     global current_location
-    if level % 4 == 0 and level != 0: # Every 4th level (Every 3 levels)
+    if level == 9:
+        current_location = 3
+    elif level % 4 == 0 and level != 0: # Every 4th level (Every 3 levels)
         current_location = (level // 4) % len(location) # Current location will increase on every 4th level
     # Displaying text on window
     draw_text(f'Level {level}', 'UI', green, screen_width/2 - 30, 5)
@@ -162,6 +163,12 @@ while run:
         # Change track
         e_forest_music.stop()
         w_willows_music.play(0, 0, 5000)
+        
+    if current_location == 3:
+        bg_img = infernal_caverns_img
+        # Change track
+        w_willows_music.stop()
+        final_level_music.play(0, 0, 1000)
     
     screen.blit(bg_img, (0,0))
     
@@ -213,7 +220,8 @@ while run:
                 game_cond = 0
 
             else: # If player has completed last level/game
-                glacial_music.stop()
+                enemy_group.empty()
+                final_level_music.stop()
                 endgame_music.play(0, 0, 5000)
                 draw_text('YOU WIN!', 'text', green, (screen_width / 2) - 270, screen_height / 2 - 200)
                 # restart game
