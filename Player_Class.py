@@ -2,6 +2,10 @@ from logging import getLoggerClass
 import pygame
 from Globals import *
 
+# Controller support setup
+pygame.joystick.init()
+joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
+
 class Player():
     def __init__(self, x, y, world):
         self.reset(x, y, world)
@@ -10,51 +14,53 @@ class Player():
     def update(self, game_cond, world):
         global level
         global platform
+        global joysticks
         dx,dy = 0,0
         col_thresh = 22
         walk_cooldown = 4
   
-        if game_cond == 0:        
+        if game_cond == 0:
     ################## -Controls- ##################
             key = pygame.key.get_pressed()
-            
-            
-            ###### -Forward- ######
-            if key[pygame.K_RIGHT] or key[pygame.K_d]:
-                self.counter +=1
-                self.direction = 1
-                dx += 5
+            for joystick in joysticks:
+
+                ###### -Forward- ######
+                if (key[pygame.K_RIGHT] or key[pygame.K_d]) == True or joystick.get_axis(0) > 0.5:
+                    self.counter +=1
+                    self.direction = 1
+                    dx += 5
+                    
+                if ((key[pygame.K_RIGHT] or key[pygame.K_d]) == False or joystick.get_axis(0) > 0.5) and (key[pygame.K_LEFT] or key[pygame.K_a] or joystick.get_axis(0) > 0.5) == False:
+                    self.counter = 0
+                    self.index = 0
+                    if self.direction == 1:
+                        self.image = self.images_right[self.index]  
+                    if self.direction == -1:
+                        self.image = self.images_left[self.index]
                 
-            if (key[pygame.K_RIGHT] or key[pygame.K_d]) == False and (key[pygame.K_LEFT] or key[pygame.K_a]) == False:
-                self.counter = 0
-                self.index = 0
-                if self.direction == 1:
-                    self.image = self.images_right[self.index]  
-                if self.direction == -1:
-                    self.image = self.images_left[self.index]
-            
-            ###### -Backward- ######
-            if key[pygame.K_LEFT] or key[pygame.K_a]:
-                self.counter += 1
-                self.direction = -1
-                dx -= 5
+                ###### -Backward- ######
+                if key[pygame.K_LEFT] or key[pygame.K_a] or joystick.get_axis(0) < -0.5:
+                    self.counter += 1
+                    self.direction = -1
+                    dx -= 5
 
-            
-            ###### -Jump- ######
-            if pygame.sprite.spritecollide(self, powerup_group, True):
-                self.stat_boost = True
-            if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) and self.jumped == False and self.in_air == False:
-                jump_fx.play() # Play jump sound
-                self.jumped = True
-                self.in_air = True
-                if self.stat_boost:
-                    self.vel_y = -22
-                else:
-                    self.vel_y = -15
+                
+                ###### -Jump- ######
+                if pygame.sprite.spritecollide(self, powerup_group, True):
+                    self.stat_boost = True
+                if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w] or joystick.get_button(0)) and self.jumped == False and self.in_air == False:
+                    print('(A) pressed')
+                    jump_fx.play() # Play jump sound
+                    self.jumped = True
+                    self.in_air = True
+                    if self.stat_boost:
+                        self.vel_y = -22
+                    else:
+                        self.vel_y = -15
 
 
-            if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False:
-                self.jumped = False
+                    if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False or joystick.get_button(0) == False:
+                        self.jumped = False
 
 
             

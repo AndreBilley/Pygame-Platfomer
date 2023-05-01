@@ -9,7 +9,7 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 
 # Level configuration
 game_cond = 0
-level = 5
+level = 1
 location = ['Glacial Mountains', 'Emerald Forest', 'Withered Willows', 'Infernal Caverns']
 current_location = 0
 max_levels = 9
