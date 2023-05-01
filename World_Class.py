@@ -58,10 +58,18 @@ class World():
                 if tile == 8:
                     gold_exit = Gold_Exit(col_count * tile_size, row_count * tile_size - (tile_size/2))
                     gold_exit_group.add(gold_exit)                
-                    
+                # Power-Up tile
                 if tile == 9:
                     powerup = Powerup(col_count * tile_size + (tile_size / 2), row_count * tile_size + (tile_size / 2))
                     powerup_group.add(powerup)
+                # Platform tile (Horizontal)
+                if tile == 10:
+                    platform = Platform(col_count * tile_size, row_count * tile_size, 1, 0)
+                    platform_group.add(platform)
+                # Platform tile (Vertical)
+                if tile == 11:
+                    platform = Platform(col_count * tile_size, row_count * tile_size, 0, 1)
+                    platform_group.add(platform)
                     
                 col_count += 1
             row_count += 1
@@ -98,6 +106,22 @@ class Enemy(Entity):
 class Lava(Entity):
     def __init__(self, x, y):
         super().__init__('Nea_game_files/Map/lava.png', x, y, tile_size, tile_size / 2)
+
+class Platform(Entity):
+    def __init__(self, x, y, move_x, move_y):
+        super().__init__('Nea_game_files/Map/grass.png', x, y, tile_size, tile_size / 2)
+        self.move_direction = 1
+        self.move_counter = 0
+        self.move_x = move_x
+        self.move_y = move_y
+    
+    def update(self):
+        self.rect.x += self.move_direction * self.move_x
+        self.rect.y += self.move_direction * self.move_y
+        self.move_counter += 1
+        if self.move_counter > 40:
+            self.move_direction *= -1
+            self.move_counter *= -1
 
 class Emerald(Entity):
     def __init__(self, x, y):

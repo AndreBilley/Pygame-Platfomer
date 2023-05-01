@@ -20,15 +20,11 @@ pygame.display.set_caption('Level Editor')
 
 
 #load images
-# sun_img = pygame.image.load('img/sun.png')
-# sun_img = pygame.transform.scale(sun_img, (tile_size, tile_size))
 bg_img = pygame.image.load('Nea_game_files/Map/mountains.png')
 bg_img = pygame.transform.scale(bg_img, (screen_width, screen_height - margin))
 gravel_img = pygame.image.load('Nea_game_files/Map/gravel.png')
 grass_img = pygame.image.load('Nea_game_files/Map/grass.png')
 enemy_img = pygame.image.load('Nea_game_files/Sprites/enemy_01.png')
-platform_x_img = pygame.image.load('img/platform_x.png')
-platform_y_img = pygame.image.load('img/platform_y.png')
 lava_img = pygame.image.load('Nea_game_files/Map/lava.png')
 emerald_img = pygame.image.load('Nea_game_files/Map/Emerald.png')
 exit_img = pygame.image.load('Nea_game_files/Map/exit.png')
@@ -119,11 +115,11 @@ def draw_world():
 					screen.blit(img, (col * tile_size + (tile_size // 4), row * tile_size + (tile_size // 4)))
 				if world_data[row][col] == 10:
 					#horizontally moving platform
-					img = pygame.transform.scale(platform_x_img, (tile_size, tile_size // 2))
+					img = pygame.transform.scale(grass_img, (tile_size, tile_size // 2))
 					screen.blit(img, (col * tile_size, row * tile_size))
 				if world_data[row][col] == 11:
 					#vertically moving platform
-					img = pygame.transform.scale(platform_y_img, (tile_size, tile_size // 2))
+					img = pygame.transform.scale(grass_img, (tile_size, tile_size // 2))
 					screen.blit(img, (col * tile_size, row * tile_size))
 
 class Button():
@@ -206,12 +202,12 @@ while run:
 				#update tile value
 				if pygame.mouse.get_pressed()[0] == 1:
 					world_data[y][x] += 1
-					if world_data[y][x] > 9:
+					if world_data[y][x] > 11:
 						world_data[y][x] = 0
 				elif pygame.mouse.get_pressed()[2] == 1:
 					world_data[y][x] -= 1
 					if world_data[y][x] < 0:
-						world_data[y][x] = 8
+						world_data[y][x] = 11
 		if event.type == pygame.MOUSEBUTTONUP:
 			clicked = False
 		#up and down key presses to change level number

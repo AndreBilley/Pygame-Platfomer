@@ -174,6 +174,7 @@ while run:
         # Game is running
         if game_cond == 0:
             enemy_group.update()
+            platform_group.update()
             update_score()
             level_info()
             
@@ -229,7 +230,8 @@ while run:
                     emeralds = 0
                 if exit_button.draw():
                     run = False
-            
+        
+        # Draw entities 
         enemy_group.draw(screen)
         lava_group.draw(screen)
         emerald_group.draw(screen)
@@ -238,6 +240,7 @@ while run:
         pause_button.draw()
         powerup_group.draw(screen)
         game_cond = player.update(game_cond, world)
+        platform_group.draw(screen)
 
     
     for event in pygame.event.get():

@@ -22,6 +22,7 @@ emerald_group = pygame.sprite.Group()
 powerup_group = pygame.sprite.Group()
 exit_group = pygame.sprite.Group()
 gold_exit_group = pygame.sprite.Group()
+platform_group = pygame.sprite.Group()
 
 # GUI configuration
 red = (255, 0, 0)
