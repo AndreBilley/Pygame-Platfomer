@@ -2,16 +2,14 @@ from logging import getLoggerClass
 import pygame
 from Globals import *
 
-# Controller support setup
-pygame.joystick.init()
-joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
 
 class Player():
     def __init__(self, x, y, world):
-        self.reset(x, y, world)
+        self.reset(x, y, world) # Calls reset method into constructor
 
         
     def update(self, game_cond, world):
+        # Declare global variables
         global level
         global platform
         global joysticks
@@ -19,70 +17,70 @@ class Player():
         col_thresh = 22
         walk_cooldown = 4
   
-        if game_cond == 0:
+        if game_cond == 0: # While gameplay is running
     ################## -Controls- ##################
             key = pygame.key.get_pressed()
-            for joystick in joysticks:
+            
+            
+            ###### -Forward- ######
+            if key[pygame.K_RIGHT] or key[pygame.K_d]:
+                self.counter +=1
+                self.direction = 1
+                dx += 5 # Moves character forward
+            # Check if character stationary 
+            if (key[pygame.K_RIGHT] or key[pygame.K_d]) == False and (key[pygame.K_LEFT] or key[pygame.K_a]) == False:
+                self.counter = 0
+                self.index = 0
+                # Determine direction to display stationary frame
+                if self.direction == 1:
+                    self.image = self.images_right[self.index]  
+                if self.direction == -1:
+                    self.image = self.images_left[self.index]
+            
+            ###### -Backward- ######
+            if key[pygame.K_LEFT] or key[pygame.K_a]:
+                self.counter += 1
+                self.direction = -1
+                dx -= 5 # Moves character backward
 
-                ###### -Forward- ######
-                if (key[pygame.K_RIGHT] or key[pygame.K_d]) == True or joystick.get_axis(0) > 0.5:
-                    self.counter +=1
-                    self.direction = 1
-                    dx += 5
-                    
-                if ((key[pygame.K_RIGHT] or key[pygame.K_d]) == False or joystick.get_axis(0) > 0.5) and (key[pygame.K_LEFT] or key[pygame.K_a] or joystick.get_axis(0) > 0.5) == False:
-                    self.counter = 0
-                    self.index = 0
-                    if self.direction == 1:
-                        self.image = self.images_right[self.index]  
-                    if self.direction == -1:
-                        self.image = self.images_left[self.index]
-                
-                ###### -Backward- ######
-                if key[pygame.K_LEFT] or key[pygame.K_a] or joystick.get_axis(0) < -0.5:
-                    self.counter += 1
-                    self.direction = -1
-                    dx -= 5
-
-                
-                ###### -Jump- ######
-                if pygame.sprite.spritecollide(self, powerup_group, True):
-                    self.stat_boost = True
-                if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w] or joystick.get_button(0)) and self.jumped == False and self.in_air == False:
-                    print('(A) pressed')
-                    jump_fx.play() # Play jump sound
-                    self.jumped = True
-                    self.in_air = True
-                    if self.stat_boost:
-                        self.vel_y = -22
-                    else:
-                        self.vel_y = -15
+            
+            ###### -Jump- ######
+            if pygame.sprite.spritecollide(self, powerup_group, True):
+                self.stat_boost = True
+            if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) and self.jumped == False and self.in_air == False:
+                jump_fx.play() # Play jump sound
+                self.jumped = True
+                self.in_air = True
+                if self.stat_boost:
+                    self.vel_y = -22 # Jump with power-up boost
+                else:
+                    self.vel_y = -15 # Standard jump
 
 
-                    if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False or joystick.get_button(0) == False:
-                        self.jumped = False
-
+            if (key[pygame.K_SPACE] or key[pygame.K_UP] or key[pygame.K_w]) == False:
+                self.jumped = False
 
             
             #### -Gravity- ####
             self.vel_y += 1
             if self.stat_boost:
                 if self.vel_y > 20:
-                    self.vel_y = 20
+                    self.vel_y = 20 # Limits given power-up enabled
             else:
                 if self.vel_y > 10:
-                    self.vel_y = 10
+                    self.vel_y = 10 # Standard jump limit
             dy += self.vel_y
             #~~~~~~~~~~~~~~~~~#    
             
             ###### -Animations- ######
-            if self.counter > walk_cooldown:
+            if self.counter > walk_cooldown: # Controls the speed of traversal, the higher the number the slower the index will increase
                 self.counter = 0
-                self.index += 1
-                if self.index >= len(self.images_right):
+                self.index += 1 # Index of array increase, traversing the array of frames
+                if self.index >= len(self.images_right): # When reahes last frame loop to beginning
                     self.index = 0
+                # Loads frames in direction depending on direction character is facing
                 if self.direction == 1:
-                    self.image = self.images_right[self.index]  
+                    self.image = self.images_right[self.index] 
                 if self.direction == -1:
                     self.image = self.images_left[self.index]
             
@@ -166,6 +164,7 @@ class Player():
         return game_cond
     
     def reset(self, x, y, world):
+        # Assigning attributes
         self.images_right = []
         self.images_left = []
         self.index = 0

@@ -62,7 +62,7 @@ pause_button = Button(screen_width - 35, 5, pause_img)
 # Level reset function
 def reset_level(level, world):
     player.reset(40, screen_height - 120, world)
-    enemy_group.empty()
+    enemy_group.empty() # .empty() - Removes all members of group to load next level
     lava_group.empty()
     exit_group.empty()
     emerald_group.empty()
@@ -70,6 +70,7 @@ def reset_level(level, world):
     powerup_group.empty()
     platform_group.empty()
     player.stat_boost = False
+    # Load level
     if path.exists(f'level{level}_data'):
         pickle_in = open(f'level{level}_data', 'rb')
         world_data = pickle.load(pickle_in)
@@ -95,6 +96,7 @@ def main_menu():
     screen.blit(title_img, (screen_width/2-261.5, 40))
     screen.blit(ground_img, (0, 650))
     draw_text('© 2023', 'UI', white, screen_width/2- 60, screen_height - 60)
+    # Draw buttons and determine actions
     if start_button.draw():
         start_screen = False
         # Change track
@@ -109,7 +111,9 @@ def pause_menu():
     global paused
     global run
     paused = True
+    # Display pause title
     screen.blit(paused_img, (screen_width/2-261.5, 40))
+    # Draw buttons and determine actions
     if resume_button.draw():
         game_cond = 0
         paused = False
@@ -124,8 +128,9 @@ def update_score():
     if pygame.sprite.spritecollide(player, emerald_group, True):
         emerald_fx.play()
         emeralds += 1
+    # Check for collision with enemy given power-up collected and stat boost enabled
     if player.stat_boost:
-        if pygame.sprite.spritecollide(player, enemy_group, True):
+        if pygame.sprite.spritecollide(player, enemy_group, True): # Removes enemy from group, therefore killing enemy
             emerald_fx.play()
             emeralds += 2
     draw_text('X ' + str(emeralds), 'UI', green, screen_width - 110, 4)
@@ -195,6 +200,7 @@ while run:
         # If player has died
         if game_cond < 0:
             draw_text('YOU LOSE', 'text', red, (screen_width / 2) - 270, screen_height / 2 - 200)
+            # Draw buttons and determine actions
             if restart_button.draw():
                 world_data = []
                 world = reset_level(level, world)
@@ -225,6 +231,7 @@ while run:
                 endgame_music.play(0, 0, 5000)
                 draw_text('YOU WIN!', 'text', green, (screen_width / 2) - 270, screen_height / 2 - 200)
                 # restart game
+                # Draw buttons and determine actions
                 if restart_button.draw():
                     # Change track
                     endgame_music.stop()

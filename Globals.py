@@ -1,6 +1,8 @@
 import pygame
 pygame.init()
 
+###-Declare global variables-###
+
 # Screen configuration
 screen_width = 800
 screen_height = 800
@@ -16,6 +18,7 @@ max_levels = 9
 emeralds = 0
 start_screen = True
 paused = False
+# Define sprite groups
 enemy_group = pygame.sprite.Group()
 lava_group = pygame.sprite.Group()
 emerald_group = pygame.sprite.Group()
@@ -25,12 +28,14 @@ gold_exit_group = pygame.sprite.Group()
 platform_group = pygame.sprite.Group()
 
 # GUI configuration
+# Define colours
 red = (255, 0, 0)
 green = (0, 255, 0)
 blue = (0, 0, 255)
 white = (255, 255, 255)
 black = (0, 0, 0)
 yellow = (255,215,0)
+# Define fonts
 text_font = "Nea_game_files/Map/PressStart2P.ttf"
 text_font_size = 70
 text_font = pygame.font.Font(text_font, text_font_size)
